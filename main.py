@@ -18,7 +18,8 @@ def convert_csv_to_data_dictionary() -> dict:
 def get_next_power_threshold(power) -> int:
     """Return the upper threshold of the power interval in which the passed values falls"""
     assert power > 0 and power <= 40, "Invalid power value"
-    return math.ceil(power / 10) * 10
+    next_tenner = math.ceil(power / 10) * 10
+    return 30 if next_tenner == 20 else next_tenner
 
 
 def get_value_for_single_param(data_dict, power, date) -> float:
@@ -35,4 +36,10 @@ def get_value_for_single_param(data_dict, power, date) -> float:
 
 def get_values(param) -> dict:
     params_list = param["data"]["attributes"]["list"]
-    return
+    data_dict = convert_csv_to_data_dictionary()
+    total_value = 0
+    for param_pair in params_list:
+        total_value += get_value_for_single_param(data_dict=data_dict, **param_pair)
+    result = {"data": {"attributes": {"result": {"value": f"{total_value:.5f}"}}}}
+    print(result)
+    return result
