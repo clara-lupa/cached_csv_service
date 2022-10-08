@@ -1,7 +1,5 @@
-from cgi import test
-from typing import Dict
 import unittest
-from main import get_values
+from main import get_values, convert_csv_to_data_dictionary
 import json
 
 
@@ -36,6 +34,15 @@ class TestGetValues(unittest.TestCase):
         actual_result = get_values(data=self.empty_param)
         expected_result = self.create_expected_result_dictionary(0.5062)
         self.assertDictEqual(actual_result, expected_result)
+
+
+class TestConvertCsvToDataDictionary(unittest.TestCase):
+    def test_returns_a_dict(self):
+        self.assertIsInstance(convert_csv_to_data_dictionary(), dict)
+
+    def test_contains_correct_keys(self):
+        actual_key_list = list(convert_csv_to_data_dictionary())
+        self.assertEqual(actual_key_list, list(range(1, 10)))
 
 
 if __name__ == "__main__":
