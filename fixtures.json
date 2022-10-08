@@ -1,0 +1,39 @@
+[
+    {
+        "data": {
+            "attributes": {
+                "list": [
+                    {
+                        "power": "12",
+                        "date": "2019-01-22"
+                    },
+                    {
+                        "power": "8",
+                        "date": "2019-02-22"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "data": {
+            "attributes": {
+                "list": [
+                    {
+                        "power": "6",
+                        "date": "2019-01-22"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "data": {
+            "attributes": {
+                "result": {
+                    "value": "0.08160"
+                }
+            }
+        }
+    }
+]
