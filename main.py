@@ -1,11 +1,13 @@
 import csv
 from datetime import datetime
+import math
 
 
-def convert_csv_to_data_dictionary():
+def convert_csv_to_data_dictionary() -> dict:
     data_dict = {}
     with open("data.csv") as data_file:
-        reader = csv.DictReader(data_file)
+        header = [h.strip() for h in data_file.readline().split(",")]
+        reader = csv.DictReader(data_file, fieldnames=header)
         for row in reader:
             month = datetime.fromisoformat(row["date_from"]).month
             data_dict[month] = row
@@ -13,5 +15,23 @@ def convert_csv_to_data_dictionary():
     return data_dict
 
 
-def get_values(data):
+def get_next_power_threshold(power) -> int:
+    """Return the upper threshold of the power interval in which the passed values falls"""
+    assert power > 0 and power <= 40, "Invalid power value"
+    return math.ceil(power / 10) * 10
+
+
+def get_value_for_single_param(data_dict, power, date) -> float:
+    """Given a date and a power value, return the according value from the data dictionary."""
+    date = datetime.fromisoformat(date)
+    if date >= datetime(year=2019, month=10, day=1):
+        month = 9  # use september for any date after october 2019
+    else:
+        month = date.month
+    power_threshold = get_next_power_threshold(float(power))
+    column_name = f"value_up_to_{power_threshold}_kwp"
+    return float(data_dict[month][column_name])
+
+
+def get_values(data) -> dict:
     pass
