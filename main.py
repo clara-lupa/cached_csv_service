@@ -33,5 +33,6 @@ def get_value_for_single_param(data_dict, power, date) -> float:
     return float(data_dict[month][column_name])
 
 
-def get_values(data) -> dict:
-    pass
+def get_values(param) -> dict:
+    params_list = param["data"]["attributes"]["list"]
+    return
