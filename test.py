@@ -3,7 +3,7 @@ from main import (
     get_values,
     convert_csv_to_data_dictionary,
     get_next_power_threshold,
-    get_value_for_single_param,
+    get_value_for_single_data_point,
 )
 import json
 
@@ -51,7 +51,7 @@ class TestConvertCsvToDataDictionary(unittest.TestCase):
 
 
 class TestGetNextPowerThreshold(unittest.TestCase):
-    def test_raises_exception_for_invalid_value(self):
+    def test_raises_exception_for_invalid_power_value(self):
         self.assertRaises(AssertionError, get_next_power_threshold, 50)
 
     def test_returns_correct_result_for_value_between_thresholds(self):
@@ -68,23 +68,23 @@ class TestGetValueForSingleParam(unittest.TestCase):
         self.data_dict = convert_csv_to_data_dictionary()
 
     def test_returns_correct_value_for_valid_input(self):
-        actual_result = get_value_for_single_param(
+        actual_result = get_value_for_single_data_point(
             data_dict=self.data_dict, date="2019-01-22", power="6"
         )
         self.assertEqual(actual_result, 0.5062)
 
     def test_returns_correct_value_for_date_after_september(self):
-        actual_result = get_value_for_single_param(
-            data_dict=self.data_dict, date="2019-12-31", power=37.5
+        actual_result = get_value_for_single_data_point(
+            data_dict=self.data_dict, date="2019-12-31", power="37.5"
         )
         self.assertEqual(actual_result, 0.3470)
 
     def test_raises_exception_for_invalid_date(self):
         self.assertRaises(
             ValueError,
-            get_value_for_single_param,
+            get_value_for_single_data_point,
             data_dict=self.data_dict,
-            power=37,
+            power="37",
             date="2019-13-54",
         )
 

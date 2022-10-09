@@ -4,6 +4,7 @@ import math
 
 
 def convert_csv_to_data_dictionary() -> dict:
+    """Read csv file and return data as dictionary with months as keys"""
     data_dict = {}
     with open("data.csv") as data_file:
         header = [h.strip() for h in data_file.readline().split(",")]
@@ -22,11 +23,11 @@ def get_next_power_threshold(power) -> int:
     return 30 if next_tenner == 20 else next_tenner
 
 
-def get_value_for_single_param(data_dict, power, date) -> float:
+def get_value_for_single_data_point(data_dict, power, date) -> float:
     """Given a date and a power value, return the according value from the data dictionary."""
     date = datetime.fromisoformat(date)
     if date >= datetime(year=2019, month=10, day=1):
-        month = 9  # use september for any date after october 2019
+        month = 9  # use september for any date after september 2019
     else:
         month = date.month
     power_threshold = get_next_power_threshold(float(power))
@@ -35,11 +36,13 @@ def get_value_for_single_param(data_dict, power, date) -> float:
 
 
 def get_values(param) -> dict:
-    params_list = param["data"]["attributes"]["list"]
+    data_points = param["data"]["attributes"]["list"]
     data_dict = convert_csv_to_data_dictionary()
     total_value = 0
-    for param_pair in params_list:
-        total_value += get_value_for_single_param(data_dict=data_dict, **param_pair)
+    for data_point in data_points:
+        total_value += get_value_for_single_data_point(
+            data_dict=data_dict, **data_point
+        )
     result = {"data": {"attributes": {"result": {"value": f"{total_value:.5f}"}}}}
     print(result)
     return result
