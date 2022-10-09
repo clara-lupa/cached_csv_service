@@ -64,26 +64,18 @@ class TestGetNextPowerThreshold(unittest.TestCase):
 
 
 class TestGetValueForSingleParam(unittest.TestCase):
-    def setUp(self) -> None:
-        self.data_dict = convert_csv_to_data_dictionary()
-
     def test_returns_correct_value_for_valid_input(self):
-        actual_result = get_value_for_single_data_point(
-            data_dict=self.data_dict, date="2019-01-22", power="6"
-        )
+        actual_result = get_value_for_single_data_point(date="2019-01-22", power="6")
         self.assertEqual(actual_result, 0.5062)
 
     def test_returns_correct_value_for_date_after_september(self):
-        actual_result = get_value_for_single_data_point(
-            data_dict=self.data_dict, date="2019-12-31", power="37.5"
-        )
+        actual_result = get_value_for_single_data_point(date="2019-12-31", power="37.5")
         self.assertEqual(actual_result, 0.3470)
 
     def test_raises_exception_for_invalid_date(self):
         self.assertRaises(
             ValueError,
             get_value_for_single_data_point,
-            data_dict=self.data_dict,
             power="37",
             date="2019-13-54",
         )
