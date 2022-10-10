@@ -1,5 +1,6 @@
 import unittest
 from main import (
+    get_value_for_data_points,
     get_values,
     convert_csv_to_data_dictionary,
     get_next_power_threshold,
@@ -63,13 +64,17 @@ class TestGetNextPowerThreshold(unittest.TestCase):
         self.assertEqual(actual_result, 10)
 
 
-class TestGetValueForSingleParam(unittest.TestCase):
+class TestGetValueForSingleDataPoint(unittest.TestCase):
     def test_returns_correct_value_for_valid_input(self):
-        actual_result = get_value_for_single_data_point(date="2019-01-22", power="6")
+        actual_result = get_value_for_single_data_point(
+            date_string="2019-01-22", power="6"
+        )
         self.assertEqual(actual_result, 0.5062)
 
     def test_returns_correct_value_for_date_after_september(self):
-        actual_result = get_value_for_single_data_point(date="2019-12-31", power="37.5")
+        actual_result = get_value_for_single_data_point(
+            date_string="2019-12-31", power="37.5"
+        )
         self.assertEqual(actual_result, 0.3470)
 
     def test_raises_exception_for_invalid_date(self):
@@ -77,7 +82,26 @@ class TestGetValueForSingleParam(unittest.TestCase):
             ValueError,
             get_value_for_single_data_point,
             power="37",
-            date="2019-13-54",
+            date_string="2019-13-54",
+        )
+
+
+class TestGetValueForDataPoints(unittest.TestCase):
+    def test_returns_correct_result_for_empty_tuple(self):
+        self.assertEqual(get_value_for_data_points(tuple()), 0)
+
+    def test_returns_correct_result_for_single_data_point(self):
+        single_data_point = (("26.3", "2020-01-19"),)
+        self.assertEqual(get_value_for_data_points(single_data_point), 0.3570)
+
+    def test_returns_correct_result_for_multiple_data_point(self):
+        multiple_data_points = (
+            ("4.5", "2019-06-23"),
+            ("33.3", "2019-05-07"),
+            ("19.8", "2019-10-03"),
+        )
+        self.assertEqual(
+            get_value_for_data_points(multiple_data_points), 0.3970 + 0.4170 + 0.3570
         )
 
 
